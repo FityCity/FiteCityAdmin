@@ -3,6 +3,8 @@
 /* Controllers */
 
 angular.module('app.controllers', ['pascalprecht.translate', 'ngCookies'])
+
+
   .controller('AppCtrl', ['$scope', '$translate', '$localStorage', '$window', 
     function(              $scope,   $translate,   $localStorage,   $window ) {
       // add 'ie' classes to html
@@ -65,7 +67,10 @@ angular.module('app.controllers', ['pascalprecht.translate', 'ngCookies'])
       }
 
   }])
-
+    .controller('ActivityCtrl',function ($scope) {
+        $scope.title="Activities";
+        console.log("test")
+    })
   // bootstrap controller
   .controller('AccordionDemoCtrl', ['$scope', function($scope) {
     $scope.oneAtATime = true;
@@ -169,7 +174,15 @@ angular.module('app.controllers', ['pascalprecht.translate', 'ngCookies'])
         $modalInstance.dismiss('cancel');
       };
     };
+    var ModalActivityCtrl = function ($scope, $modalInstance, items) {
+            $scope.ok = function () {
+                $modalInstance.close($scope.selected.item);
+            };
 
+            $scope.cancel = function () {
+                $modalInstance.dismiss('cancel');
+            };
+        };
     $scope.open = function (size) {
       var modalInstance = $modal.open({
         templateUrl: 'myModalContent.html',
@@ -188,6 +201,16 @@ angular.module('app.controllers', ['pascalprecht.translate', 'ngCookies'])
         $log.info('Modal dismissed at: ' + new Date());
       });
     };
+
+
+    $scope.openAddActivityModal = function (size) {
+        var modalInstance = $modal.open({
+            templateUrl: 'myModalContent.html',
+            controller: ModalActivityCtrl,
+            size: size
+        });
+
+    }
   }])
   .controller('PaginationDemoCtrl', ['$scope', '$log', function($scope, $log) {
     $scope.totalItems = 64;

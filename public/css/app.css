@@ -3174,6 +3174,11 @@ a.text-black:hover {
   padding-top: 15px;
   padding-bottom: 15px;
 }
+.padder-s {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
 .no-padder {
   padding: 0 !important;
 }
@@ -3188,7 +3193,7 @@ a.text-black:hover {
   border: 1px solid rgba(0,0,0,0.05);
 }
 .b-a {
-  border: 1px solid #dee5e7;
+  border: 1px solid #8AACB6;
 }
 .b-t {
   border-top: 1px solid #dee5e7;
@@ -3204,6 +3209,9 @@ a.text-black:hover {
 }
 .b-light {
   border-color: #edf1f2;
+}
+.b-darkgrey{
+    border-color: #c1c7c8
 }
 .b-dark {
   border-color: #3a3f51;

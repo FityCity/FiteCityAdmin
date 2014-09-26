@@ -56,6 +56,11 @@ var app = angular.module('app', [
                 url: '/dashboard',
                 templateUrl: 'tpl/app_dashboard.html'
             })
+            .state('app.activities',{
+                url:'/activities',
+                templateUrl:'tpl/activities.html',
+                Controller:'ActivityCtrl'
+            })
             .state('app.ui', {
                 url: '/ui',
                 template: '<div ui-view class="fade-in-up"></div>'
@@ -341,7 +346,8 @@ var app = angular.module('app', [
                         'js/jquery/jvectormap/jquery-jvectormap-us-aea-en.js',
                         'js/jquery/jvectormap/jquery-jvectormap.css'],
     footable:       ['js/jquery/footable/footable.all.min.js',
-                        'js/jquery/footable/footable.core.css']
+                        'js/jquery/footable/footable.core.css'],
+    mixitup:        ['js/jquery/mixitup.jquery.mixitup.min.js']
     }
 )
 
