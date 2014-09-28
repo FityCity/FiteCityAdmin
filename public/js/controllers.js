@@ -67,9 +67,34 @@ angular.module('app.controllers', ['pascalprecht.translate', 'ngCookies'])
       }
 
   }])
-    .controller('ActivityCtrl',function ($scope) {
+    .controller('ActivityCtrl',function ($scope,$modal,ActivityService) {
         $scope.title="Activities";
-        console.log("test")
+        var activities=ActivityService.all();
+        for(var i=0;i<activities.length;i++){
+            activities[i].imgSrc= $.jYoutube(activities[i].url,"full")
+        }
+        $scope.activities=activities;
+
+        $scope.openDetail=function(activity,size){
+            $scope.activity=activity
+            var ModalVideoCtrl = function ($scope, $modalInstance,activity) {
+                console.log(activity)
+                $scope.activity=activity;
+                $scope.cancel = function () {
+                    $modalInstance.dismiss('cancel');
+                };
+            };
+            var modalInstance = $modal.open({
+                templateUrl: 'videoModalContent.html',
+                controller: ModalVideoCtrl,
+                size: size,
+                resolve: {
+                    activity: function () {
+                        return $scope.activity;
+                    }
+                }
+            });
+        }
     })
   // bootstrap controller
   .controller('AccordionDemoCtrl', ['$scope', function($scope) {
@@ -207,7 +232,17 @@ angular.module('app.controllers', ['pascalprecht.translate', 'ngCookies'])
         var modalInstance = $modal.open({
             templateUrl: 'myModalContent.html',
             controller: ModalActivityCtrl,
-            size: size
+            size: size,
+            resolve: {
+                items: function () {
+                    return $scope.items;
+                }
+            }
+        });
+
+        modalInstance.result.then(function () {
+        }, function () {
+            $log.info('Modal dismissed at: ' + new Date());
         });
 
     }
