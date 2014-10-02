@@ -67,19 +67,33 @@ angular.module('app.controllers', ['pascalprecht.translate', 'ngCookies'])
       }
 
   }])
-    .controller('ActivityCtrl',function ($scope,$modal,ActivityService) {
+    .controller('ActivityCtrl',function ($scope,$modal,$http,ActivityService) {
+        $http({method: 'GET', url: '/users'}).
+            success(function(data, status, headers, config) {
+                console.log(status)
+                console.log(data)
+                // this callback will be called asynchronously
+                // when the response is available
+            }).
+            error(function(data, status, headers, config) {
+                console.log(status)
+                console.log(data)
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+            });
         $scope.title="Activities";
         var activities=ActivityService.all();
         for(var i=0;i<activities.length;i++){
-            activities[i].imgSrc= $.jYoutube(activities[i].url,"full")
+            activities[i].imgSrc= $.jYoutube("//www.youtube.com/watch?v="+activities[i].uri,"full")
         }
         $scope.activities=activities;
-
+        $('#Container').mixItUp();
         $scope.openDetail=function(activity,size){
-            $scope.activity=activity
-            var ModalVideoCtrl = function ($scope, $modalInstance,activity) {
-                console.log(activity)
+            $scope.activity=activity;
+
+            var ModalVideoCtrl = function ($scope, $modalInstance,$sce,activity) {
                 $scope.activity=activity;
+                $scope.videoSrc=$sce.trustAsResourceUrl("http://www.youtube.com/embed/"+activity.uri);
                 $scope.cancel = function () {
                     $modalInstance.dismiss('cancel');
                 };
@@ -91,6 +105,9 @@ angular.module('app.controllers', ['pascalprecht.translate', 'ngCookies'])
                 resolve: {
                     activity: function () {
                         return $scope.activity;
+                    },
+                    videoSrc:function(){
+                        return $scope.videoSrc;
                     }
                 }
             });
