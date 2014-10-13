@@ -1,6 +1,6 @@
 <script>
     $(function(){
-
+        $('#Container').mixItUp();
     });
 </script>
 <div ng-controller="ActivityCtrl">
@@ -12,7 +12,7 @@
 </div>
 <div class="wrapper-md">
     <div class="row">
-        <div class="col-lg-12 controls" style="text-align: right" ng-controller="ModalDemoCtrl">
+        <div class="col-lg-12 controls" ng-controller="ModalDemoCtrl">
             <script type="text/ng-template" id="myModalContent.html">
                 <div ng-include="'tpl/modal_add_activity.html'"></div>
             </script>
@@ -21,7 +21,7 @@
                 <button type="button" class="btn btn-default filter" data-filter="all">All</button>
                 <button type="button" class="btn btn-default filter" data-filter=".easy">Easy</button>
                 <button type="button" class="btn btn-default filter" data-filter=".normal">Normal</button>
-                <button type="button" class="btn btn-default filter" data-filter=".hard">Hard</button>
+                <button type="button" class="btn btn-default filter" data-filter=".challenge">Challenge</button>
             </div>
         </div>
     </div>
@@ -35,26 +35,24 @@
             <div class="panel-heading no-border bg-primary">
                 <span class="text-lt">Jumping Jacks</span>
             </div>
-            <div class="item m-l-n-xxs m-r-n-xxs thumb-box thumb-box-1">
+            <div class="item  thumb-box thumb-box-1">
                 <img src="{{activity.imgSrc}}"  class="img-full" alt="">
                 <div class="thumb-pane bg-black">
                     <div class="thumbnail-text">
                         <h4 class="clearfix">
                             <a   title="">{{activity.title}}</a>
                         </h4>
-                        <p>1. {{activity.instructions}}<br>
-                            2. {{activity.instructions}}<br>
-                        </p>
-                        <a ng-click="openDetail(activity)" class="btn btn-success thumb-more"><span class="button-content">View</span></a>
+                        <p>Lorem ipsum dolor sic amet dixit tu</p>
+                        <a ng-click="openDetail(activity)" class="btn btn-success thumb-more"><span class="button-content">View details</span></a>
                     </div>
                 </div>
 
             </div>
-            <div class="hbox text-center b-b  text-sm">
+            <div class="hbox text-center b-b b-t text-sm">
                 <a href class="col padder-s text-muted b-r ">
                     <i class="icon ion-compose block  fa-2x"></i>
                 </a>
-                <a href class="col padder-s text-muted  ">
+                <a href class="col padder-s text-muted  " ng-click="delete(activity)">
                     <i class="icon ion-trash-b block  fa-2x"></i>
                 </a>
             </div>

@@ -1,4 +1,5 @@
 var express = require('express');
+var mongoose = require('mongoose');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -9,7 +10,7 @@ var bodyParser = require('body-parser');
 // var users = require('./routes/users');
 //change here
 var app = module.exports=express();
-
+mongoose.connect(process.env.MONGOHQ_URL)
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hjs');

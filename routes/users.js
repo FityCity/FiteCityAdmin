@@ -1,25 +1,34 @@
 app=require('../app')
+var User = require('../models/user');
 
-
-var fs = require("fs"),
-    json;
-
-function readJsonFileSync(filepath, encoding){
-
-    if (typeof (encoding) == 'undefined'){
-        encoding = 'utf8';
-    }
-    var file = fs.readFileSync(filepath, encoding);
-    return JSON.parse(file);
-}
-
-
-
-
-
+/*  GET: users  */
 app.get('/users',function(req,res){
-	// console.log(__dirname)
-	// var json=readJsonFileSync('./public/Mockdata/'+'activities.json')
-	res.send({"name":"test","age":18})
+	User.find(function(err, users) {
+    if (err){
+      res.send(err);
+    }
+    res.json(users);
+  });
 
+})
+
+
+ /*  POST: users  */
+app.post('/users',function(req,res){
+	// Create a new instance of the User model
+  var user = new User();
+
+  // Set the user properties that came from the POST data
+  user.name = req.body.name;
+  user.device_id = req.body.device_id;
+  user.facebook_id = req.body.facebook_id;
+  user.last_login_time = Date();
+
+  // Save the user and check for errors
+  user.save(function(err) {
+    if (err){
+      res.send(err);
+    }
+    res.json({ message: 'User added!', data: user });
+  });
 })

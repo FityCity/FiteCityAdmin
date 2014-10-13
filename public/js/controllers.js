@@ -67,33 +67,25 @@ angular.module('app.controllers', ['pascalprecht.translate', 'ngCookies'])
       }
 
   }])
-    .controller('ActivityCtrl',function ($scope,$modal,$http,ActivityService) {
-        $http({method: 'GET', url: '/users'}).
-            success(function(data, status, headers, config) {
-                console.log(status)
-                console.log(data)
-                // this callback will be called asynchronously
-                // when the response is available
-            }).
-            error(function(data, status, headers, config) {
-                console.log(status)
-                console.log(data)
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
-            });
+    .controller('ActivityCtrl',function ($scope,$modal, ActivityService) {
         $scope.title="Activities";
-        var activities=ActivityService.all();
-        for(var i=0;i<activities.length;i++){
-            activities[i].imgSrc= $.jYoutube("//www.youtube.com/watch?v="+activities[i].uri,"full")
+        // for(var i=0;i<activities.length;i++){
+        //     activities[i].imgSrc= $.jYoutube("//www.youtube.com/watch?v="+activities[i].youtube_id,"full")
+        // }
+        $scope.activities=ActivityService.all();
+        // $('#Container').mixItUp();
+
+        $scope.delete = function(activity){
+          ActivityService.delete(activity);
+          $scope.activities = ActivityService.all();
         }
-        $scope.activities=activities;
-        $('#Container').mixItUp();
+
         $scope.openDetail=function(activity,size){
             $scope.activity=activity;
 
-            var ModalVideoCtrl = function ($scope, $modalInstance,$sce,activity) {
+            var ModalVideoCtrl = function ($scope, $modalInstance, $sce, activity) {
                 $scope.activity=activity;
-                $scope.videoSrc=$sce.trustAsResourceUrl("http://www.youtube.com/embed/"+activity.uri);
+                $scope.videoSrc=$sce.trustAsResourceUrl("http://www.youtube.com/embed/"+activity.youtube_id);
                 $scope.cancel = function () {
                     $modalInstance.dismiss('cancel');
                 };
@@ -105,9 +97,6 @@ angular.module('app.controllers', ['pascalprecht.translate', 'ngCookies'])
                 resolve: {
                     activity: function () {
                         return $scope.activity;
-                    },
-                    videoSrc:function(){
-                        return $scope.videoSrc;
                     }
                 }
             });
@@ -216,15 +205,32 @@ angular.module('app.controllers', ['pascalprecht.translate', 'ngCookies'])
         $modalInstance.dismiss('cancel');
       };
     };
-    var ModalActivityCtrl = function ($scope, $modalInstance, items) {
-            $scope.ok = function () {
-                $modalInstance.close($scope.selected.item);
-            };
+    var ModalActivityCtrl = function ($scope, $modalInstance, ActivityService, items) {
+      $scope.modalInstance = $modalInstance;
 
-            $scope.cancel = function () {
-                $modalInstance.dismiss('cancel');
-            };
-        };
+      var activityTemplate = {
+        title:"",
+        youtube_id:"",
+        instructions:""
+      };
+      $scope.newActivity = angular.copy(activityTemplate);
+
+      $scope.post = function(modalInstance){
+        console.log("Posting activity");
+        ActivityService.post($scope.newActivity);
+        modalInstance.close();
+        $scope.newActivity = angular.copy(activityTemplate);
+      };
+
+      $scope.ok = function () {
+          $modalInstance.close($scope.selected.item);
+      };
+
+      $scope.cancel = function () {
+          $modalInstance.dismiss('cancel');
+      };
+    };
+
     $scope.open = function (size) {
       var modalInstance = $modal.open({
         templateUrl: 'myModalContent.html',
